@@ -1,3 +1,5 @@
+import { piece_face_torse } from './09_face_torse.js';
+
 // CORPS — element 04 du dossier 15_robot/. REFONTE 2 : coque sculptee, pas une
 // caisse. Chanfreins, bombes, joints en creux, soudures, rivets, calandre,
 // feux arriere, plaque, pot, prise d'air, durites. Subdivision tenue (perf).
@@ -110,47 +112,7 @@ export function piece_corps(E) {
   const front = new THREE.Group();
   front.position.z = 0.44;
   body.add(front);
-  let frontGeo = new THREE.BoxGeometry(0.50, 0.40, 0.038, 22, 18, 2);
-  {
-    const pos = frontGeo.attributes.position;
-    for (let i = 0; i < pos.count; i++) {
-      const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
-      const bord = Math.min(1, Math.min(0.25 - Math.abs(x), 0.20 - Math.abs(y - 0.06)) * 10);
-      if (bord <= 0) continue;
-      const bow = Math.sin(x * 4.2) * Math.cos((y - 0.06) * 3.4) * 0.007;
-      const dent = wav(x * 1.2, y * 1.7, 0.5) * 0.0022;
-      pos.setZ(i, z + (bow + dent) * bord);
-    }
-    pos.needsUpdate = true;
-  }
-  E.finishHull(frontGeo);
-  const frontPlate = new THREE.Mesh(frontGeo, E.hullFaces(4));
-  frontPlate.position.y = 0.06;
-  front.add(frontPlate);
-
-  const grille = new THREE.Mesh(new BoxGeometry(0.36, 0.20, 0.06), m.darkMat);
-  grille.position.set(-0.04, 0.10, -0.030);
-  front.add(grille);
-  const engine = new THREE.Mesh(new BoxGeometry(0.30, 0.13, 0.035), m.frameMat);
-  engine.position.set(-0.04, 0.10, -0.045);
-  front.add(engine);
-  for (let i = 0; i < 7; i++) {
-    const fin = new THREE.Mesh(new BoxGeometry(0.29, 0.008, 0.05), m.steelMat);
-    fin.position.set(-0.04, 0.045 + i * 0.018, -0.048);
-    front.add(fin);
-  }
-  for (let i = 0; i < 6; i++) {
-    const slat = new THREE.Mesh(new BoxGeometry(0.34, 0.014, 0.016), m.frameMat);
-    slat.position.set(-0.04, 0.022 + i * 0.031, -0.020);
-    front.add(slat);
-  }
-  const lampRing = new THREE.Mesh(new CylinderGeometry(0.052, 0.058, 0.03, 20), m.frameMat);
-  lampRing.rotation.x = Math.PI / 2;
-  lampRing.position.set(0.17, 0.16, -0.012);
-  front.add(lampRing);
-  const lampLens = new THREE.Mesh(new CircleGeometry(0.044, 20), m.ledWhite);
-  lampLens.position.set(0.17, 0.16, 0.006);
-  front.add(lampLens);
+  piece_face_torse(E, front);
 
   // Pot vertical a tribord avant : silhouette machine, chapeau anti-pluie.
   const exhaust = new THREE.Group();

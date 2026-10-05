@@ -1,1 +1,16 @@
-{ "name": "z02-robot", "private": true, "type": "module", "dependencies": { "three": "0.170.0" } }
+{
+  "name": "z02-robot",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@sparticuz/chromium": "153.0.0",
+    "playwright-core": "1.63.0"
+  },
+  "scripts": {
+    "capture": "node scripts/capture.mjs",
+    "test": "node scripts/validate.mjs"
+  }
+}

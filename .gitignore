@@ -1,2 +1,7 @@
 node_modules/
 *.png.tmp
+.venv/
+__pycache__/
+# Captures de la première tentative rejetée ; le lot-01 est la comparaison livrée.
+images/after/
+images/baseline/

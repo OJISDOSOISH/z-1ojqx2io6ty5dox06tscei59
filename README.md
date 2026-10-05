@@ -19,3 +19,21 @@ Produit 6 vues x 2 éclairages (dur, couvert) et `stats.txt` (triangles, matéri
 Variable `CHROME_PATH` pour forcer un navigateur. Gros plan sur n'importe quel point : `window.SHOOTAT(x,y,z,azimut,elevation,distance_m)` dans `rendu.html`.
 
 `rendu.html` contient des versions de test de `canvasTex`, `rr`, `clamp01`, `P` : ces outils viennent du projet de l'auteur et ne sont pas dans le dépôt.
+
+## Lot 01 — façade du torse (reprise après première passe rejetée)
+
+Le périmètre et les limites sont décrits dans `RAPPORT.md` ; ce n'est pas une
+validation cinéma du robot entier. Comparaison principale :
+`images/lot-01/planches/torse_face.jpg`.
+
+Banc Node autonome (pas d'installation Python nécessaire) :
+```sh
+npm ci
+npm run capture -- images/controle
+npm test
+# Pour reconstruire les planches du lot (ImageMagick requis) :
+scripts/planches.sh
+```
+`CHROME_PATH` permet d'utiliser un Chromium installé ; le secours npm fourni
+est destiné au Linux x64 de ce banc. Les dépendances et navigateurs ne sont
+pas versionnés. La graine aléatoire est imposée uniquement par le test.
