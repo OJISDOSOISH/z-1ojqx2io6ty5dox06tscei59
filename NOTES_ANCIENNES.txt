@@ -1,0 +1,34 @@
+ROBOT Z-02 — SCULPTURE (cabine, ailes, patine, visage, sacoche)
+==============================================================
+
+CONTENU
+  zipp2.js                    assembleur : buildZipp2(THREE, H) — signature inchangee
+  scene/15_robot/             un fichier par element :
+    00_matieres.js              tole mottled + vertex colors (plus de degradé cadre)
+    01_tete.js                  cabine chanfreinee, casquette, menton, tourelle
+    02_visage.js                dalle bombee, regard asymetrique, cadre hors pupilles
+    03_antenne.js               fouet, stub, parabole, cable
+    04_corps.js                 coque bombee, feux, plaque, pot, verin, prise d'air
+    05_bras.js                  manipulateur, piston, durites, lanterne
+    06_sacoche.js               berceau jerrican, sangles tube, cliquets
+    07_train.js                 ailes galbees, liner, marchepied raccordé
+    08_pneus.js                 SCULPTURE UTILISATEUR — octet pour octet, non modifié
+    DEMO-PNEUS-ORIGINAL.html    demo d'origine, intacte
+
+INSTALLATION
+  1. Copier zipp2.js et scene/15_robot/ dans votre projet.
+  2. Importer :
+       import { buildZipp2 } from './zipp2.js';
+       const Z = buildZipp2(THREE, { canvasTex, rr, clamp01, P, renderer });
+       scene.add(Z.robot);
+  3. Contrat des pieces inchange : piece_xxx(E) avec
+     E = { THREE, canvasTex, rr, clamp01, P, RoundedBoxGeometry, rrShapeGeo, m, ROBOT }.
+
+PNEUS
+  08_pneus.js n'a pas ete ouvert en ecriture. Hash SHA-256 identique a l'original.
+  Voie corrigee dans l'assembleur : z = +/-0.27, rayon 0.25, centre y = 0.252.
+
+CONTRAINTES
+  Pas de GLTF, pas de texture externe. Materiaux partages (m) pour l'envMap.
+  Les pneus seuls depassent largement 250k triangles (maille 1280x200 x 4 roues).
+  Le reste du robot reste leger. Materiaux scene < 40.

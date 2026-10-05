@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body style="margin:0">
+<script type="module">
+import * as THREE from 'three';
+import { buildZipp2 } from './zipp2.js';
+window.ERRS=[];
+window.addEventListener('error',e=>ERRS.push(String(e.message)));
+try{
+const W=1400,Hh=900;
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+renderer.setSize(W,Hh);renderer.shadowMap.enabled=true;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+const canvasTex=(w,h,fn)=>{const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');fn(g,w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t;};
+const rr=(a,b)=>a+Math.random()*(b-a);
+const clamp01=v=>Math.max(0,Math.min(1,v));
+const P={orange:'#e0911f'};
+const Z=buildZipp2(THREE,{canvasTex,rr,clamp01,P,renderer});
+const scene=new THREE.Scene();scene.background=new THREE.Color('#9aa3ab');
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(30,30),new THREE.MeshStandardMaterial({color:'#6b645b',roughness:1}));
+floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+scene.add(new THREE.HemisphereLight('#ffffff','#443c33',0.6));
+const sun=new THREE.DirectionalLight('#fff0d8',2.6);sun.position.set(4,6,3);sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-4,right:4,top:4,bottom:-4});scene.add(sun);
+scene.add(Z.robot);
+const box=new THREE.Box3().setFromObject(Z.robot);window.BOX=[box.min.toArray(),box.max.toArray()];
+const c=box.getCenter(new THREE.Vector3()),d=box.getSize(new THREE.Vector3()).length();
+const cam=new THREE.PerspectiveCamera(40,W/Hh,0.05,100);
+window.SHOOT=(az,el,dist,ty)=>{const a=az*Math.PI/180,e=el*Math.PI/180;
+ cam.position.set(c.x+Math.sin(a)*Math.cos(e)*d*dist,c.y+Math.sin(e)*d*dist,c.z+Math.cos(a)*Math.cos(e)*d*dist);
+ cam.lookAt(c.x,c.y+(ty||0),c.z);renderer.render(scene,cam);return renderer.domElement.toDataURL('image/png');};
+window.READY=true;
+}catch(e){ERRS.push('FATAL '+e.message+' '+(e.stack||'').slice(0,300));window.READY=true;}
+</script></body></html>
